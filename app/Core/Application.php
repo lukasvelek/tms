@@ -188,8 +188,8 @@ class Application {
 
         // --- PANELS ---
 
-        $toppanel = $this->renderToppanel();
-        $subpanel = $this->renderSubpanel();
+        //$toppanel = $this->renderToppanel();
+        //$subpanel = $this->renderSubpanel();
 
         // --- END OF PANELS ---
 
@@ -212,7 +212,7 @@ class Application {
 
         // Get presenter
         $origPresenter = $presenter;
-        $presenter = $module->getPresenterByName($presenter);
+        $presenter = $module->getPresenterByName($presenter . 'Presenter');
 
         if($presenter === NULL) {
             throw new Exception('Presenter ' . $origPresenter);
@@ -240,13 +240,13 @@ class Application {
 
         $this->pageContent = '';
 
-        if($presenter::DRAW_TOPPANEL) {
+        /*if($presenter::DRAW_TOPPANEL) {
             $this->pageContent .= $toppanel;
         }
 
         if(!is_null($subpanel)) {
             $this->pageContent .= $subpanel;
-        }
+        }*/
 
         $this->renderFlashMessage();
 

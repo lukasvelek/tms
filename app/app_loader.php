@@ -165,6 +165,7 @@ foreach($modules as $moduleName => $modulePresenters) {
         $presenterUrl = 'App\\Modules\\' . $moduleName . '\\' . $modulePresenter;
 
         $presenter = new $presenterUrl();
+        $presenter->setModule($module);
 
         $module->registerPresenter($presenter);
     }

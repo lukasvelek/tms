@@ -2,16 +2,20 @@
 
 namespace App\Modules;
 
+use App\Core\FileManager;
 use App\Core\TemplateManager;
 use App\Helpers\FormDataHelper;
+use ReflectionMethod;
 
 abstract class APresenter implements IPresenter {
     private string $name;
     private string $title;
     private IModule $module;
     private array $actions;
+    private string $templateText;
     
     protected TemplateManager $templateManager;
+    protected ?object $template;
     
     public bool $allowWhenLoginProcess;
     public string $subpanel = '';
@@ -20,6 +24,8 @@ abstract class APresenter implements IPresenter {
     protected function __construct(string $name, string $title = '', bool $allowWhenLoginProcess = false) {
         $this->name = $name;
         $this->allowWhenLoginProcess = $allowWhenLoginProcess;
+        $this->templateText = '';
+        $this->template = null;
 
         if($title == '') {
             $this->title = $this->name;
@@ -32,28 +38,12 @@ abstract class APresenter implements IPresenter {
         $this->actions = [];
     }
 
-    protected function fill(array $data, string &$subject) {
-        $this->templateManager->fill($data, $subject);
+    protected function fill(array $data) {
+        $this->templateManager->fill($data, $this->templateText);
     }
 
     protected function loadTemplate(string $path) {
         return $this->templateManager->loadTemplate($path);
-    }
-
-    protected function get(string $key, bool $escape = true) {
-        if(isset($_GET[$key])) {
-            return FormDataHelper::get($key, $escape);
-        } else {
-            return null;
-        }
-    }
-
-    protected function post(string $key, bool $escape = true) {
-        if(isset($_POST[$key])) {
-            return FormDataHelper::post($key, $escape);
-        } else {
-            return null;
-        }
     }
 
     public function getActions() {
@@ -77,11 +67,79 @@ abstract class APresenter implements IPresenter {
     }
 
     public function performAction(string $name) {
-        if(method_exists($this, $name)) {
-            return $this->$name();
+        // action
+        // render
+
+        $capitalized = ucfirst($name);
+        $actionName = 'handle' . $capitalized;
+        $renderName = 'render' . $capitalized;
+
+        if(method_exists($this, $actionName) && !method_exists($this, $renderName)) {
+            $args = $this->fireMethodArgs($actionName);
+            return $this->$actionName(...$args);
+        } else if(method_exists($this, $actionName) && method_exists($this, $renderName)) {
+            $actionArgs = $this->fireMethodArgs($actionName);
+            $this->$actionName(...$actionArgs);
+            $this->beforeRender($name);
+            $renderArgs = $this->fireMethodArgs($renderName);
+            $this->$renderName(...$renderArgs);
+            return $this->afterRender();
+        } else if(!method_exists($this, $actionName) && method_exists($this, $renderName)) {
+            $this->beforeRender($name);
+            $renderArgs = $this->fireMethodArgs($renderName);
+            $this->$renderName(...$renderArgs);
+            return $this->afterRender();
         } else {
-            die('Method does not exist!');
+            die('Methods ' . $actionName . ' or ' . $renderName . ' do not exist!');
         }
+    }
+
+    protected function beforeRender(string $name) {
+        // load template
+
+        $file = __DIR__ . '\\' . $this->module->getName() . '\\Presenters\\templates\\' . $this->name . '\\' . $name . '.html';
+
+        if(!FileManager::fileExists($file)) {
+            die('Template \'' . $file . '\' does not exist!');
+        }
+
+        $this->templateText = $this->loadTemplate($file);
+
+        $this->template = new class() {
+            private array $_internalValues;
+
+            public function __construct() {
+                $this->_internalValues = [];
+            }
+
+            public function __set(string $name, mixed $value) {
+                $this->_internalValues[] = $name;
+                $this->{$name} = $value;
+            }
+
+            public function __get(string $name) {
+                return $this->{$name};
+            }
+
+            public function getToFill() {
+                $array = [];
+
+                foreach($this->_internalValues as $iv) {
+                    $name = '$' . strtoupper($iv) . '$';
+                    $value = $this->{$iv};
+
+                    $array[$name] = $value;
+                }
+
+                return $array;
+            }
+        };
+    }
+
+    protected function afterRender() {
+        $data = $this->template->getToFill();
+        $this->fill($data, $this->templateText);
+        return $this->templateText;
     }
 
     protected function setActions(array $actions) {
@@ -104,6 +162,24 @@ abstract class APresenter implements IPresenter {
         } else {
             return $tempMethods;
         }
+    }
+
+    private function fireMethodArgs(string $methodName) {
+        $args = [];
+
+        $reflection = new ReflectionMethod($this, $methodName);
+
+        foreach($reflection->getParameters() as $param) {
+            if(isset($_GET[$param->name])) {
+                $args[$param->name] = $_GET[$param->name];
+            } else if(isset($_POST[$param->name])) {
+                $args[$param->name] = $_POST[$param->name];
+            } else {
+                $args[$param->name] = null;
+            }
+        }
+
+        return $args;
     }
 }
 

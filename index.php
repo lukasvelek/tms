@@ -11,6 +11,12 @@ try {
     exit;
 }
 
+if(!isset($_SESSION['id_current_user'])) {
+    if($_GET['page'] != 'AdminModule:Login:form') {
+        $app->redirect('AdminModule:Login:form');
+    }
+}
+
 if(isset($_GET['page'])) {
     $page = htmlspecialchars($_GET['page']);
 
@@ -39,9 +45,9 @@ $title = 'TMS | ' . $app->currentPresenter->getTitle();
     </head>
     <body>
         <script type="text/javascript" src="js/jquery-3.7.1.js"></script>
-        <div id="cover">
+        <!--<div id="cover">
             <img style="position: fixed; top: 50%; left: 49%;" src='img/loading.gif' width='32' height='32'>
-        </div>
+        </div>-->
         <?php
 
         $app->showPage();
