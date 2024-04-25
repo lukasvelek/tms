@@ -58,27 +58,17 @@ class DatabaseInstaller {
      * @return true
      */
     private function createTables() {
-        /*$tables = array(
+        $tables = array(
             'users' => array(
                 'id' => 'INT(32) NOT NULL PRIMARY KEY AUTO_INCREMENT',
-                'firstname' => 'VARCHAR(256) NOT NULL',
-                'lastname' => 'VARCHAR(256) NOT NULL',
+                'fullname' => 'VARCHAR(256) NOT NULL',
                 'username' => 'VARCHAR(256) NOT NULL',
                 'password' => 'VARCHAR(256) NULL',
-                'status' => 'INT(2) NOT NULL DEFAULT 1',
                 'email' => 'VARCHAR(256) NULL',
-                'address_street' => 'VARCHAR(256) NULL',
-                'address_house_number' => 'VARCHAR(256) NULL',
-                'address_city' => 'VARCHAR(256) NULL',
-                'address_zip_code' => 'VARCHAR(256) NULL',
-                'address_country' => 'VARCHAR(256) NULL',
                 'date_created' => 'DATETIME NOT NULL DEFAULT current_timestamp()',
-                'date_password_changed' => 'DATETIME NOT NULL',
-                'password_change_status' => 'INT(2) NOT NULL DEFAULT 1',
-                'default_user_page_url' => 'VARCHAR(256) NULL',
                 'date_updated' => 'DATETIME NOT NULL DEFAULT current_timestamp()',
-                'default_user_datetime_format' => 'VARCHAR(256) NULL',
-                'last_login_hash' => 'VARCHAR(256) NULL'
+                'last_login_hash' => 'VARCHAR(256) NULL',
+                'is_client' => 'INT(2) NOT NULL'
             )
         );
 
@@ -103,7 +93,7 @@ class DatabaseInstaller {
             $this->logger->sql($sql, __METHOD__);
 
             $this->db->query($sql);
-        }*/
+        }
 
         return true;
     }

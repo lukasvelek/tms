@@ -26,6 +26,21 @@ class UserEntity extends AEntity {
     public function getEmail() {
         return $this->email;
     }
+
+    public static function createUserEntityFromDbRow($row) {
+        $id = $row['id'];
+        $dateCreated = $row['date_created'];
+        $dateUpdated = $row['date_updated'];
+        $username = $row['username'];
+        $fullname = $row['fullname'];
+        $email = null;
+
+        if(isset($row['email'])) {
+            $email = $row['email'];
+        }
+
+        return new self($id, $dateCreated, $dateUpdated, $username, $fullname, $email);
+    }
 }
 
 ?>

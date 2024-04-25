@@ -2,6 +2,7 @@
 
 namespace App\Core;
 
+use App\Authenticators\UserAuthenticator;
 use App\Entities\User;
 use App\Modules\IModule;
 use App\Core\DB\Database;
@@ -12,6 +13,7 @@ use App\Core\FileManager;
 use App\Entities\UserEntity;
 use App\Helpers\ArrayStringHelper;
 use App\Modules\IPresenter;
+use App\Repositories\UserRepository;
 use Exception;
 
 /**
@@ -53,6 +55,10 @@ class Application {
     public FileManager $fileManager;
     public ServiceManager $serviceManager;
 
+    public UserRepository $userRepository;
+
+    public UserAuthenticator $userAuthenticator;
+
     private array $modules;
     private ?string $pageContent;
     private ?string $flashMessage;
@@ -77,6 +83,10 @@ class Application {
         $this->fileManager = new FileManager(LOG_DIR, CACHE_DIR);
         $this->logger = new Logger($this->fileManager);
         $this->conn = new Database(DB_SERVER, DB_USER, DB_PASS, DB_NAME, $this->logger);
+
+        $this->userAuthenticator = new UserAuthenticator($this->conn, $this->logger);
+
+        $this->userRepository = new UserRepository($this->conn, $this->logger);
         
         $sessionDestroyed = false;
         if($install) {
@@ -306,6 +316,8 @@ class Application {
             $this->pageContent .= $this->flashMessage;
         }
 
+        $this->clearFlashMessage();
+
         return;
     }
 
@@ -385,8 +397,6 @@ class Application {
 
     /**
      * Clears a flash message
-     * 
-     * @param bool $clearFromSession If the flash message should be removed entirely
      */
     public function clearFlashMessage() {
         $this->flashMessage = null;

@@ -12,7 +12,7 @@ try {
 }
 
 if(!isset($_SESSION['id_current_user'])) {
-    if($_GET['page'] != 'AdminModule:Login:form') {
+    if(!str_contains($_GET['page'], 'AdminModule:Login')) {
         $app->redirect('AdminModule:Login:form');
     }
 }
@@ -45,6 +45,7 @@ $title = 'TMS | ' . $app->currentPresenter->getTitle();
     </head>
     <body>
         <script type="text/javascript" src="js/jquery-3.7.1.js"></script>
+        <script type="text/javascript" src="js/Application.js"></script>
         <!--<div id="cover">
             <img style="position: fixed; top: 50%; left: 49%;" src='img/loading.gif' width='32' height='32'>
         </div>-->
