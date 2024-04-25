@@ -27,6 +27,9 @@ class LoginPresenter extends APresenter {
             $user = $app->userRepository->getUserById($result);
 
             $app->setCurrentUser($user);
+
+            $app->flashMessage('Logged in as \'' . $username . '\'.', FlashMessageTypes::SUCCESS);
+            $app->redirect('Home:dashboard');
         } else{
             $app->flashMessage('Bad credentials entered.', FlashMessageTypes::ERROR);
             $app->redirect('form');

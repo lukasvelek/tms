@@ -83,23 +83,28 @@ abstract class APresenter implements IPresenter {
             $this->beforeRender($name);
             $renderArgs = $this->fireMethodArgs($renderName);
             $this->$renderName(...$renderArgs);
-            return $this->afterRender();
+            return $this->afterRender($name);
         } else if(!method_exists($this, $actionName) && method_exists($this, $renderName)) {
             $this->beforeRender($name);
             $renderArgs = $this->fireMethodArgs($renderName);
             $this->$renderName(...$renderArgs);
-            return $this->afterRender();
+            return $this->afterRender($name);
         } else {
             die('Methods ' . $actionName . ' or ' . $renderName . ' do not exist!');
         }
     }
 
     protected function beforeRender(string $name) {
+        global $app;
+
+        $app->logger->info('[RENDER START]', $this->module->getName() . ':' . $this->name . ':' . $name);
+
         // load template
 
         $file = __DIR__ . '\\' . $this->module->getName() . '\\Presenters\\templates\\' . $this->name . '\\' . $name . '.html';
 
         if(!FileManager::fileExists($file)) {
+            $app->logger->info('[RENDER END]', $this->module->getName() . ':' . $this->name . ':' . $name);
             die('Template \'' . $file . '\' does not exist!');
         }
 
@@ -136,9 +141,14 @@ abstract class APresenter implements IPresenter {
         };
     }
 
-    protected function afterRender() {
+    protected function afterRender(string $name) {
+        global $app;
+        
         $data = $this->template->getToFill();
         $this->fill($data, $this->templateText);
+        
+        $app->logger->info('[RENDER END]', $this->module->getName() . ':' . $this->name . ':' . $name);
+        
         return $this->templateText;
     }
 

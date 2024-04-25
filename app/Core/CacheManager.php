@@ -291,7 +291,7 @@ class CacheManager {
             $name .= $_SESSION['id_current_user'];
         }
 
-        $dirname = 'dmsCache';
+        $dirname = '';
 
         if(!is_dir($this->fm->cacheFolder . $dirname)) {
             mkdir($this->fm->cacheFolder . $dirname);

@@ -373,6 +373,7 @@ class Application {
      */
     public function setCurrentUser(UserEntity $user) {
         $this->user = $user;
+        $_SESSION['id_current_user'] = $user->getId();
     }
 
     /**

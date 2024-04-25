@@ -48,6 +48,8 @@ class DatabaseInstaller {
 
         $this->createTables();
         $this->createIndexes();
+
+        $this->insertDefaultUsers();
         
         $this->logger->setType(LogFileTypes::DEFAULT);
     }
@@ -151,6 +153,26 @@ class DatabaseInstaller {
             $this->logger->sql($sql, __METHOD__);
             $this->db->query($sql);
         }*/
+
+        return true;
+    }
+
+    private function insertDefaultUsers() {
+        $users = [
+            [
+                'username' => 'admin',
+                'fullname' => 'Administrator',
+                'is_client' => '0',
+                'password' => password_hash('admin', PASSWORD_BCRYPT)
+            ]
+        ];
+
+        foreach($users as $user) {
+            $sql = "INSERT INTO `users` (`username`, `fullname`, `is_client`, `password`) VALUES ('";
+            $sql .= $user['username'] . '\', \'' . $user['fullname'] . '\', \'' . $user['is_client'] . '\', \'' . $user['password'] . '\')';
+            $this->logger->sql($sql, __METHOD__);
+            $this->db->query($sql);
+        }
 
         return true;
     }
