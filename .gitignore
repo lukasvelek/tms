@@ -1,0 +1,4 @@
+config.local.php
+cache/
+logs/
+app/Core/install

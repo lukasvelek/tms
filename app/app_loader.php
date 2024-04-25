@@ -1,7 +1,7 @@
 <?php
 
 /**
- * The default DMS appplication loader.
+ * The default appplication loader.
  * 
  * It loads all dependencies that are sorted by importance:
  * 1. Interfaces
@@ -17,8 +17,6 @@
  * @version 1.2
  */
 
-use App\Exceptions\ClassDoesNotImplementInterfaceException;
-use App\Exceptions\SystemFileDoesNotExistException;
 use App\Modules\IModule;
 
 $dependencies = array();
@@ -36,11 +34,10 @@ function loadDependencies(array &$dependencies, string $dir) {
     unset($content[1]);
 
     $skip = array(
-        $dir . '\\dms_loader.php',
+        $dir . '\\app_loader.php',
         $dir . '\\install',
         $dir . '\\Ajax',
-        $dir . '\\PHPMailer',
-        $dir . '\\dms_loader2.php'
+        $dir . '\\PHPMailer'
     );
 
     $extensionsToSkip = array(
@@ -51,7 +48,8 @@ function loadDependencies(array &$dependencies, string $dir) {
         'gif',
         'jpg',
         'svg',
-        'sql'
+        'sql',
+        'distrib'
     );
 
     foreach($content as $c) {
@@ -147,6 +145,8 @@ if(!App\Core\FileManager::fileExists('config.local.php')) {
 if(!App\Core\FileManager::fileExists('app/Modules/modules.php')) {
     throw new Exception('app/Modules/modules.php');
 }
+
+require_once('config.local.php');
 
 include('Modules/modules.php');
 

@@ -27,7 +27,7 @@ try {
     exit;
 }
 
-$title = 'DMS | ' . $app->currentPresenter->getTitle();
+$title = 'TMS | ' . $app->currentPresenter->getTitle();
 
 ?>
 <html lang="en">
