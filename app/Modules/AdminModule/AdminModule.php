@@ -2,6 +2,7 @@
 
 namespace App\Modules\AdminModule;
 
+use App\Core\TemplateManager;
 use App\Modules\IModule;
 use App\Modules\IPresenter;
 
@@ -42,6 +43,14 @@ class AdminModule implements IModule {
 
     public function getPresenters() {
         return $this->presenters;
+    }
+
+    public function getNavbar() {
+        $templateManager = TemplateManager::getTemporaryObject();
+
+        $template = $templateManager->loadTemplate(__DIR__ . '/Presenters/templates/@layout/navbar.html');
+
+        return $template;
     }
 }
 

@@ -250,6 +250,8 @@ class Application {
 
         $this->pageContent = '';
 
+        $this->pageContent .= $this->currentModule->getNavbar();
+
         /*if($presenter::DRAW_TOPPANEL) {
             $this->pageContent .= $toppanel;
         }

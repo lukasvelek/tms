@@ -270,3 +270,12 @@ div[id^="dropdownmenu-ribbon-"] {
     background-color: lightblue;
     padding: 10px;
 }
+
+#navbar {
+    padding: 5px;
+
+    background-color: rgba(250, 250, 250, 0.8);
+
+    margin-left: 5px;
+    margin-right: 5px;
+}

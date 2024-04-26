@@ -7,8 +7,6 @@ use App\Modules\APresenter;
 use App\UI\FormBuilder\FormBuilder;
 
 class LoginPresenter extends APresenter {
-    public const DRAW_TOPPANEL = false;
-
     public function __construct() {
         parent::__construct('LoginPresenter', 'Login');
     }

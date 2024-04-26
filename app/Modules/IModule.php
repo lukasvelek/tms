@@ -9,6 +9,7 @@ interface IModule {
     function setPresenter(IPresenter $presenter);
     function getPresenters();
     function registerPresenter(IPresenter $presenter);
+    function getNavbar();
 }
 
 ?>
