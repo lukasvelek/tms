@@ -13,6 +13,20 @@ class LoginPresenter extends APresenter {
         parent::__construct('LoginPresenter', 'Login');
     }
 
+    protected function handleCheckLogin() {
+        global $app;
+
+        if(isset($_SESSION['id_current_user'])) {
+            $user = $app->userRepository->getUserById($_SESSION['id_current_user']);
+
+            $app->setCurrentUser($user);
+
+            $app->redirect('Home:dashboard');
+        } else {
+            $app->redirect('form');
+        }
+    }
+
     protected function renderForm() {
         $this->template->page_title = 'Login form';
         $this->template->login_form = $this->createForm();

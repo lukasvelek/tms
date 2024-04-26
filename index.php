@@ -22,7 +22,7 @@ if(isset($_GET['page'])) {
 
     $app->currentUrl = $page;
 } else {
-    $app->redirect($app::URL_HOME_PAGE);
+    $app->redirect('AdminModule:Login:checkLogin');
 }
 
 try {
