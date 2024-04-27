@@ -15,6 +15,9 @@ if(!isset($_SESSION['id_current_user'])) {
     if(!str_contains($_GET['page'], 'AdminModule:Login')) {
         $app->redirect('AdminModule:Login:form');
     }
+} else {
+    $user = $app->userRepository->getUserById($_SESSION['id_current_user']);
+    $app->setCurrentUser($user);
 }
 
 if(isset($_GET['page'])) {

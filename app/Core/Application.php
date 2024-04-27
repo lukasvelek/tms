@@ -24,13 +24,6 @@ use Exception;
  * @author Lukas Velek
  */
 class Application {
-    public const URL_LOGIN_PAGE = 'AnonymModule:LoginPage:showForm';
-    public const URL_HOME_PAGE = 'UserModule:HomePage:showHomepage';
-    public const URL_SETTINGS_PAGE = 'UserModule:Settings:showDashboard';
-    public const URL_DOCUMENTS_PAGE = 'UserModule:Documents:showAll';
-    public const URL_PROCESSES_PAGE = 'UserModule:Processes:showAll';
-    public const URL_LOGOUT_PAGE = 'UserModule:UserLogout:logoutUser';
-
     public const SYSTEM_VERSION_MAJOR = 1;
     public const SYSTEM_VERSION_MINOR = 0;
     public const SYSTEM_VERSION_PATCH = 0;
@@ -95,7 +88,7 @@ class Application {
         
         if($sessionDestroyed) {
             CacheManager::invalidateAllCache();
-            $this->redirect(self::URL_LOGIN_PAGE);
+            //$this->redirect(self::URL_LOGIN_PAGE);
         }
 
         if(SERVICE_AUTO_RUN && isset($_SESSION['id_current_user'])) {
@@ -141,17 +134,17 @@ class Application {
             $newParams[$k] = $v;
         }
 
-        if(!array_key_exists('id_ribbon', $newParams) && $url != self::URL_LOGIN_PAGE) {
+        /*if(!array_key_exists('id_ribbon', $newParams) && $url != self::URL_LOGIN_PAGE) {
             if(isset($_SESSION['id_current_ribbon'])) {
                 $newParams['id_ribbon'] = $this->currentIdRibbon;
             }
-        }
+        }*/
 
-        if($url != self::URL_LOGIN_PAGE) {
+        /*if($url != self::URL_LOGIN_PAGE) {
             if(array_key_exists('id_current_ribbon', $_SESSION)) {
                 unset($_SESSION['id_current_ribbon']);
             }
-        }
+        }*/
 
         $i = 0;
         foreach($newParams as $paramKey => $paramValue) {
@@ -234,7 +227,7 @@ class Application {
         // User is allowed to visit specific pages before logging in
         if($this->currentPresenter->allowWhenLoginProcess === false && isset($_SESSION['login_in_process'])) {
             $this->flashMessage('You have to be logged in in order to visit this page.', 'warn');
-            $this->redirect(self::URL_LOGIN_PAGE);
+            //$this->redirect(self::URL_LOGIN_PAGE);
         }
 
         // Load page body
@@ -242,7 +235,7 @@ class Application {
             $pageBody = $module->currentPresenter->performAction($action);
         } catch(Exception $e) {
             $this->flashMessage($e->getMessage() . ' Stack trace: ' . $e->getTraceAsString(), 'error');
-            $this->redirect(self::URL_HOME_PAGE);
+            //$this->redirect(self::URL_HOME_PAGE);
         }
 
 
@@ -375,7 +368,7 @@ class Application {
      */
     public function setCurrentUser(UserEntity $user) {
         $this->user = $user;
-        $_SESSION['id_current_user'] = $user->getId();
+        //$_SESSION['id_current_user'] = $user->getId();
     }
 
     /**
@@ -478,7 +471,7 @@ class Application {
             
             if($redirect) {
                 if(is_null($redirectUrl) || empty($redirectUrl)) {
-                    $this->redirect(self::URL_HOME_PAGE);
+                    //$this->redirect(self::URL_HOME_PAGE);
                 } else {
                     $this->redirect($redirectUrl['page'], $redirectUrl);
                 }

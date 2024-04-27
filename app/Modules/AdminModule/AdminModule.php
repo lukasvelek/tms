@@ -2,55 +2,43 @@
 
 namespace App\Modules\AdminModule;
 
-use App\Core\TemplateManager;
-use App\Modules\IModule;
-use App\Modules\IPresenter;
+use App\Modules\AModule;
+use App\UI\LinkBuilder;
 
-class AdminModule implements IModule {
-    public IPresenter $currentPresenter;
-    private string $name;
-    private string $title;
-    private array $presenters;
-
+class AdminModule extends AModule {
     public function __construct() {
-        $this->name = 'AdminModule';
-        $this->title = 'Test module';
+        parent::__construct('AdminModule', 'Admin module');
+
+        $this->navbar();
     }
 
-    public function getName() {
-        return $this->name;
-    }
-    
-    public function getTitle() {
-        return $this->title;
-    }
+    private function navbar() {
+        global $app;
 
-    public function getPresenterByName(string $name) {
-        if(array_key_exists($name, $this->presenters)) {
-            return $this->presenters[$name];
+        if($app->user !== NULL) {
+            $logo = LinkBuilder::createAdvLink(['page' => 'AdminModule:Home:dashboard'], 'TMS', 'toppanel-link');
+            $this->fillNavbar('$LOGO$', $logo);
+
+            $links = [
+                LinkBuilder::createAdvLink(['page' => 'AdminModule:Home:dashboard'], 'Dashboard', 'toppanel-link'),
+                LinkBuilder::createAdvLink(['page' => 'AdminModule:Tickets:queues'], 'Ticket queues', 'toppanel-link')
+            ];
+            $this->fillNavbar('$LINKS$', $links, true);
+
+            $user = [];
+            $user[] = '<span class="toppanel-link">' . $app->user->getUsername() . '</span>';
+            $user[] = LinkBuilder::createAdvLink(['page' => 'AdminModule:Logout:logout'], 'Logout', 'toppanel-link');
+            $this->fillNavbar('$USER$', $user, true);
         } else {
-            return null;
+            $logo = '';
+            $this->fillNavbar('$LOGO$', $logo);
+
+            $links = '';
+            $this->fillNavbar('$LINKS$', $links);
+
+            $user = LinkBuilder::createAdvLink(['page' => 'AdminModule:Login:form'], 'Log in', 'toppanel-link');
+            $this->fillNavbar('$USER$', $user);
         }
-    }
-
-    public function setPresenter(IPresenter $presenter) {
-        $this->currentPresenter = $presenter;
-    }
-
-    public function registerPresenter(IPresenter $presenter) {
-        $this->presenters[$presenter->getName()] = $presenter;
-    }
-
-    public function getPresenters() {
-        return $this->presenters;
-    }
-
-    public function getNavbar() {
-        $templateManager = TemplateManager::getTemporaryObject();
-
-        $template = $templateManager->loadTemplate(__DIR__ . '/Presenters/templates/@layout/navbar.html');
-
-        return $template;
     }
 }
 
