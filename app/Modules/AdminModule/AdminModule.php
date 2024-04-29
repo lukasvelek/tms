@@ -16,18 +16,18 @@ class AdminModule extends AModule {
         global $app;
 
         if($app->user !== NULL) {
-            $logo = LinkBuilder::createAdvLink(['page' => 'AdminModule:Home:dashboard'], 'TMS', 'toppanel-link');
+            $logo = LinkBuilder::createAdvLink(['page' => 'AdminModule:Home:dashboard'], 'TMS', 'navbar-link');
             $this->fillNavbar('$LOGO$', $logo);
 
             $links = [
-                LinkBuilder::createAdvLink(['page' => 'AdminModule:Home:dashboard'], 'Dashboard', 'toppanel-link'),
-                LinkBuilder::createAdvLink(['page' => 'AdminModule:Tickets:queues'], 'Ticket queues', 'toppanel-link')
+                LinkBuilder::createAdvLink(['page' => 'AdminModule:Home:dashboard'], 'Dashboard', 'navbar-link'),
+                LinkBuilder::createAdvLink(['page' => 'AdminModule:Tickets:queues'], 'Ticket queues', 'navbar-link')
             ];
             $this->fillNavbar('$LINKS$', $links, true);
 
             $user = [];
-            $user[] = '<span class="toppanel-link">' . $app->user->getUsername() . '</span>';
-            $user[] = LinkBuilder::createAdvLink(['page' => 'AdminModule:Logout:logout'], 'Logout', 'toppanel-link');
+            $user[] = '<span class="navbar-text">' . $app->user->getUsername() . '</span>';
+            $user[] = LinkBuilder::createAdvLink(['page' => 'AdminModule:Logout:logout'], 'Logout', 'navbar-link');
             $this->fillNavbar('$USER$', $user, true);
         } else {
             $logo = '';
@@ -36,7 +36,7 @@ class AdminModule extends AModule {
             $links = '';
             $this->fillNavbar('$LINKS$', $links);
 
-            $user = LinkBuilder::createAdvLink(['page' => 'AdminModule:Login:form'], 'Log in', 'toppanel-link');
+            $user = LinkBuilder::createAdvLink(['page' => 'AdminModule:Login:form'], 'Log in', 'navbar-link');
             $this->fillNavbar('$USER$', $user);
         }
     }

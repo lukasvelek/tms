@@ -88,11 +88,11 @@ body {
     text-align: right;
 }
 
-#toppanel .general-link, #subpanel .general-link, #toppanel .toppanel-link, #subpanel .toppanel-link {
+#toppanel .general-link, #subpanel .general-link, #toppanel .navbar-link, #subpanel .navbar-link {
     margin-left: 10px;
 }
 
-#toppanel-right .general-link, #toppanel-right .toppanel-link {
+#toppanel-right .general-link, #toppanel-right .navbar-link {
     margin-right: 10px;
 }
 
@@ -103,23 +103,30 @@ body {
     font-size: 16px;
 }
 
-.toppanel-link {
+.navbar-link {
     color: black;
     text-decoration: none;
 
     font-size: 20px;
 }
 
-.toppanel-link:hover {
+.navbar-link:hover {
     color: black;
     text-decoration: none;
     border-bottom: 2px solid rgb(100, 100, 100);
 }
 
-.toppanel-link:active {
+.navbar-link:active {
     color: black;
     text-decoration: none;
     border-bottom: 2px solid black;
+}
+
+.navbar-text {
+    color: black;
+    text-decoration: none;
+
+    font-size: 20px;
 }
 
 .general-link:hover {
