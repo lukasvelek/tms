@@ -276,13 +276,17 @@ class GridBuilder {
         $btn = function(string $text, int $newPage) use ($jsHandlerName, $page, $lastPage) {
             $code = '<button type="button" class="grid-control-button" onclick="' . $jsHandlerName . '(';
 
+            $disabled = '';
+
             if($newPage < 1) {
                 $newPage = 1;
+                $disabled = ' disabled';
             } else if($newPage > $lastPage) {
                 $newPage = $lastPage;
+                $disabled = ' disabled';
             }
 
-            $code .= $page . ')">' . $text . '</button>';
+            $code .= $page . ')"' . $disabled . '>' . $text . '</button>';
 
             return $code;
         };
