@@ -37,6 +37,22 @@ abstract class AComponent {
 
         return $qb;
     }
+
+    protected function get(string $varName) {
+        if(isset($_GET[$varName])) {
+            return htmlspecialchars($_GET[$varName]);
+        } else {
+            return null;
+        }
+    }
+
+    protected function post(string $varName) {
+        if(isset($_POST[$varName])) {
+            return htmlspecialchars($_POST[$varName]);
+        } else {
+            return null;
+        }
+    }
 }
 
 ?>

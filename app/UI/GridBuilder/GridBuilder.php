@@ -271,6 +271,31 @@ class GridBuilder {
 
         return $code;
     }
+
+    public function createGridControls(string $jsHandlerName, int $page, int $lastPage) {
+        $btn = function(string $text, int $newPage) use ($jsHandlerName, $page, $lastPage) {
+            $code = '<button type="button" class="grid-control-button" onclick="' . $jsHandlerName . '(';
+
+            if($newPage < 1) {
+                $newPage = 1;
+            } else if($newPage > $lastPage) {
+                $newPage = $lastPage;
+            }
+
+            $code .= $page . ')">' . $text . '</button>';
+
+            return $code;
+        };
+
+        $firstButton = $btn('&lt;&lt;', 1);
+        $previousButton = $btn('&lt;', ($page - 1));
+        $nextButton = $btn('&gt;', ($page + 1));
+        $lastButton = $btn('&gt;&gt;', $lastPage);;
+        
+        $code = $firstButton . $previousButton . $nextButton . $lastButton;
+
+        return $code;
+    }
 }
 
 ?>

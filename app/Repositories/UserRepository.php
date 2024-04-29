@@ -39,6 +39,31 @@ class UserRepository extends ARepository {
             return $user;
         }
     }
+
+    public function composeQueryForGrid(?string $method = null) {
+        $qb = $this->qb($method ?? __METHOD__);
+
+        $qb ->select(['*'])
+            ->from('users');
+
+        return $qb;
+    }
+
+    public function getUserCount() {
+        $qb = $this->qb(__METHOD__);
+
+        $qb ->select(['COUNT(id) AS cnt'])
+            ->from('users')
+            ->execute();
+
+        $count = 0;
+
+        while($row = $qb->fetchAssoc()) {
+            $count = $row['cnt'];
+        }
+
+        return $count;
+    }
 }
 
 ?>
