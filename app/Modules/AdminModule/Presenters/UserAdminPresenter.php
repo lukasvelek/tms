@@ -24,6 +24,12 @@ class UserAdminPresenter extends AAdminPresenter {
         $this->template->links = LinkBuilder::createAdvLink(['page' => 'UserAdmin:form'], 'New user');
     }
 
+    public function handleForm() {
+        if(isset($_POST) && !empty($_POST) && isset($_POST['username'])) {
+            $username = 
+        }
+    }
+
     public function renderForm() {
         global $app;
 
