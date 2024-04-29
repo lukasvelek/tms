@@ -38,6 +38,7 @@ class LoginPresenter extends APresenter {
         if($result !== NULL) {
             $user = $app->userRepository->getUserById($result);
 
+            $_SESSION['id_current_user'] = $result;
             $app->setCurrentUser($user);
 
             $app->flashMessage('Logged in as \'' . $username . '\'.', FlashMessageTypes::SUCCESS);
