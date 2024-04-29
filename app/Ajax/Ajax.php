@@ -3,6 +3,7 @@
 use App\Core\DB\Database;
 use App\Core\FileManager;
 use App\Core\Logger\Logger;
+use App\Repositories\UserRepository;
 
 session_start();
 
@@ -23,9 +24,9 @@ function loadDependencies2(array &$dependencies, string $dir) {
     $skip = array(
         $dir . '\\app_loader.php',
         $dir . '\\install',
-        $dir . '\\Modules',
         $dir . '\\Ajax',
-        $dir . '\\PHPMailer'
+        $dir . '\\PHPMailer',
+        $dir . '\\Modules'
     );
 
     $extensionsToSkip = array(
@@ -36,7 +37,8 @@ function loadDependencies2(array &$dependencies, string $dir) {
         'gif',
         'jpg',
         'svg',
-        'sql'
+        'sql',
+        'distrib'
     );
 
     foreach($content as $c) {
@@ -81,9 +83,9 @@ function sortDependencies2(array &$dependencies) {
         $filenameArr = explode('\\', $dependency);
         $filename = $filenameArr[count($filenameArr) - 1];
 
-        if($filename[0] == 'A') {
+        if($filename[0] == 'A' && ctype_upper($filename[1])) {
             $abstractClasses[] = $dependency;
-        } else if($filename[0] == 'I') {
+        } else if($filename[0] == 'I' && ctype_upper($filename[1])) {
             if(getNestLevel2($dependency) > 5) {
                 $interfaces[] = $dependency;
             } else {
@@ -107,28 +109,18 @@ function getNestLevel2(string $dependencyPath) {
     return count(explode('\\', $dependencyPath));
 }
 
-loadDependencies2($dependencies, '..\\');
+loadDependencies2($dependencies, 'C:\\xampp\\htdocs\\tms\\app\\');
 sortDependencies2($dependencies);
 
 foreach($dependencies as $dependency) {
     require_once($dependency);
 }
 
-// VENDOR DEPENDENCIES
-
-require_once('../Core/Vendor/PHPMailer/OAuthTokenProvider.php');
-require_once('../Core/Vendor/PHPMailer/OAuth.php');
-require_once('../Core/Vendor/PHPMailer/DSNConfigurator.php');
-require_once('../Core/Vendor/PHPMailer/Exception.php');
-require_once('../Core/Vendor/PHPMailer/PHPMailer.php');
-require_once('../Core/Vendor/PHPMailer/POP3.php');
-require_once('../Core/Vendor/PHPMailer/SMTP.php');
-
-// END OF VENDOR DENEPENDENCIES
-
-if(!file_exists('../../config.local.php')) {
+if(!file_exists('C:\\xampp\\htdocs\\tms\\config.local.php')) {
     throw new Exception('config.local.php');
 }
+
+require_once('C:\\xampp\\htdocs\\tms\\config.local.php');
 
 $user = null;
 
@@ -136,5 +128,7 @@ $fm = new FileManager(LOG_DIR, CACHE_DIR);
 
 $logger = new Logger($fm);
 $db = new Database(DB_SERVER, DB_USER, DB_PASS, DB_NAME, $logger);
+
+$userRepository = new UserRepository($db, $logger);
 
 ?>
