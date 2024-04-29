@@ -4,15 +4,15 @@ namespace App\Modules;
 
 use App\Core\FileManager;
 use App\Core\TemplateManager;
-use App\Helpers\FormDataHelper;
 use ReflectionMethod;
 
 abstract class APresenter implements IPresenter {
     private string $name;
     private string $title;
-    private IModule $module;
-    private array $actions;
     private string $templateText;
+    private array $actions;
+    private array $beforeRenderCallbacks;
+    private IModule $module;
     
     protected TemplateManager $templateManager;
     protected ?object $template;
@@ -36,6 +36,7 @@ abstract class APresenter implements IPresenter {
         $this->templateManager = TemplateManager::getTemporaryObject();
 
         $this->actions = [];
+        $this->beforeRenderCallbacks = [];
     }
 
     protected function fill(array $data) {
@@ -139,6 +140,12 @@ abstract class APresenter implements IPresenter {
                 return $array;
             }
         };
+
+        if(!empty($this->beforeRenderCallbacks)) {
+            foreach($this->beforeRenderCallbacks as $callback) {
+                $callback($this->template);
+            }
+        }
     }
 
     protected function afterRender(string $name) {
@@ -172,6 +179,10 @@ abstract class APresenter implements IPresenter {
         } else {
             return $tempMethods;
         }
+    }
+
+    protected function addBeforeRenderCallback(callable $callback) {
+        $this->beforeRenderCallbacks[] = $callback;
     }
 
     private function fireMethodArgs(string $methodName) {

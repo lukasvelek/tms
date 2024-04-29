@@ -27,6 +27,11 @@ foreach($modules as $module => $data) {
         if(!is_dir($presenterDir . $presenterFile)) {
             $presenter = explode('.', $presenterFile)[0];
 
+            if($presenter[0] == 'A' && ctype_upper($presenter[1])) {
+                // abstract
+                continue;
+            }
+
             $modules[$module][] = $presenter;
         }
     }
