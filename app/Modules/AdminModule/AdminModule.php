@@ -21,7 +21,8 @@ class AdminModule extends AModule {
 
             $links = [
                 LinkBuilder::createAdvLink(['page' => 'AdminModule:Home:dashboard'], 'Dashboard', 'navbar-link'),
-                LinkBuilder::createAdvLink(['page' => 'AdminModule:Tickets:queues'], 'Ticket queues', 'navbar-link')
+                LinkBuilder::createAdvLink(['page' => 'AdminModule:Tickets:queues'], 'Ticket queues', 'navbar-link'),
+                LinkBuilder::createAdvLink(['page' => 'AdminModule:Administration:dashboard'], 'Administration', 'navbar-link')
             ];
             $this->fillNavbar('$LINKS$', $links, true);
 

@@ -11,7 +11,7 @@ class LoginPresenter extends APresenter {
         parent::__construct('LoginPresenter', 'Login');
     }
 
-    protected function handleCheckLogin() {
+    public function handleCheckLogin() {
         global $app;
 
         if(isset($_SESSION['id_current_user'])) {
@@ -25,12 +25,12 @@ class LoginPresenter extends APresenter {
         }
     }
 
-    protected function renderForm() {
+    public function renderForm() {
         $this->template->page_title = 'Login form';
         $this->template->login_form = $this->createForm();
     }
 
-    protected function handleProcessForm(string $username, string $password) {
+    public function handleProcessForm(string $username, string $password) {
         global $app;
 
         $result = $app->userAuthenticator->authenticateUser($username, $password);
