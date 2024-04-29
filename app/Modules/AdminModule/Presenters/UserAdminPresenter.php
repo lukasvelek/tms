@@ -2,7 +2,9 @@
 
 namespace App\Modules\AdminModule;
 
+use App\Components\Forms\UserFormFactory;
 use App\Components\Grids\UserGridFactory;
+use App\UI\LinkBuilder;
 
 class UserAdminPresenter extends AAdminPresenter {
     public function __construct() {
@@ -18,6 +20,18 @@ class UserAdminPresenter extends AAdminPresenter {
 
         $this->template->user_grid = $userGridFactory->createComponent();
         $this->template->user_grid_control = $userGridFactory->createGridControls();
+        $this->template->links = [];
+        $this->template->links = LinkBuilder::createAdvLink(['page' => 'UserAdmin:form'], 'New user');
+    }
+
+    public function renderForm() {
+        global $app;
+
+        $userFormFactory = new UserFormFactory($app->getConn(), $app->logger, $app->userRepository, '?page=AdminModule:UserAdmin:form');
+
+        $this->template->links = [];
+        $this->template->links[] = LinkBuilder::createAdvLink(['page' => 'UserAdmin:list'], '&larr; Back');
+        $this->template->form = $userFormFactory->createComponent();
     }
 }
 

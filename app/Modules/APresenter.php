@@ -39,6 +39,18 @@ abstract class APresenter implements IPresenter {
         $this->beforeRenderCallbacks = [];
     }
 
+    protected function httpGet(string $key) {
+        if(array_key_exists($key, $_GET)) {
+            return htmlspecialchars($_GET[$key]);
+        } else {
+            return null;
+        }
+    }
+
+    protected function httpPost(string $key) {
+        
+    }
+
     protected function fill(array $data) {
         $this->templateManager->fill($data, $this->templateText);
     }
