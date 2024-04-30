@@ -4,6 +4,7 @@ namespace App\Modules\AdminModule;
 
 use App\Components\Forms\UserFormFactory;
 use App\Components\Grids\UserGridFactory;
+use App\Core\CryptManager;
 use App\UI\LinkBuilder;
 
 class UserAdminPresenter extends AAdminPresenter {
@@ -26,7 +27,11 @@ class UserAdminPresenter extends AAdminPresenter {
 
     public function handleForm() {
         if(isset($_POST) && !empty($_POST) && isset($_POST['username'])) {
-            $username = 
+            $username = $this->httpPost('username');
+            $password = $this->httpPost('password');
+            $fullname = $this->httpPost('fullname');
+
+            $password = CryptManager::hashPassword($password);
         }
     }
 

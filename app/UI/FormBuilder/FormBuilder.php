@@ -149,8 +149,8 @@ class FormBuilder {
    * @param string $text Submit button text
    * @return Input Submit type input
    */
-  public function createSubmit(string $text = 'Submit') {
-    return $this->createInput()->setType('submit')->setValue($text);
+  public function createSubmit(string $text = 'Submit', string $id = 'submit') {
+    return $this->createInput()->setType('submit')->setValue($text)->setId($id);
   }
 
   public function createTextInput(string $name, string $value = '', string $placeholder = '') {

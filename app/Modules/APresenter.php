@@ -48,7 +48,11 @@ abstract class APresenter implements IPresenter {
     }
 
     protected function httpPost(string $key) {
-        
+        if(array_key_exists($key, $_POST)) {
+            return htmlspecialchars($_POST[$key]);
+        } else {
+            return null;
+        }
     }
 
     protected function fill(array $data) {
