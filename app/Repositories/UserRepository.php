@@ -74,6 +74,17 @@ class UserRepository extends ARepository {
 
         return $qb->fetch();
     }
+
+    public function deleteUser(int $id) {
+        $qb = $this->qb(__METHOD__);
+
+        $qb ->delete()
+            ->from('users')
+            ->where('id = ?', [$id])
+            ->execute();
+
+        return $qb->fetch();
+    }
 }
 
 ?>
