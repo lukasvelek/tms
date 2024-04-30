@@ -1,5 +1,6 @@
 <?php
 
+use App\Components\Grids\UserGridFactory;
 use App\Entities\UserEntity;
 use App\UI\GridBuilder;
 use App\UI\LinkBuilder;
@@ -27,7 +28,7 @@ try {
 }
 
 function ajaxList() {
-    global $userRepository;
+    global $userRepository, $db, $logger;
 
     $page = get('page');
 
@@ -46,21 +47,11 @@ function ajaxList() {
         $users[] = UserEntity::createUserEntityFromDbRow($row);
     }
 
-    $gb = new GridBuilder();
+    $ugf = new UserGridFactory($db, $logger, $userRepository);
 
-    $gb->addColumns(['username' => 'Username', 'fullname' => 'Fullname', 'email' => 'Email']);
-    $gb->addDataSource($users);
-    $gb->addAction(function(UserEntity $user) {
-        return LinkBuilder::createAdvLink(['page' => 'AdminModule:Users:profile', 'idUser' => $user->getId()], 'Profile');
-    });
-    $gb->addAction(function(UserEntity $user) {
-        return LinkBuilder::createAdvLink(['page' => 'AdminModule:UserAdmin:form', 'idUser' => $user->getId()], 'Edit');
-    });
-    $gb->addAction(function(UserEntity $user) {
-        return LinkBuilder::createAdvLink(['page' => 'AdminModule:UserAdmin:delete', 'idUser' => $user->getId()], 'Delete');
-    });
+    $json = json_encode(['table' => $ugf->createComponent(), 'controls' => $ugf->createGridControls()]);
 
-    echo $gb->build();
+    echo $json;
 }
 
 exit;

@@ -26,13 +26,13 @@ class UserGridFactory extends AComponent implements IFactory {
         $this->gb->addColumns(['username' => 'Username', 'fullname' => 'Fullname', 'email' => 'Email']);
         $this->gb->addDataSource($this->getUsersForGrid());
         $this->gb->addAction(function(UserEntity $user) {
-            return LinkBuilder::createAdvLink(['page' => 'Users:profile', 'idUser' => $user->getId()], 'Profile');
+            return LinkBuilder::createAdvLink(['page' => 'AdminModule:Users:profile', 'idUser' => $user->getId()], 'Profile');
         });
         $this->gb->addAction(function(UserEntity $user) {
-            return LinkBuilder::createAdvLink(['page' => 'form', 'idUser' => $user->getId()], 'Edit');
+            return LinkBuilder::createAdvLink(['page' => 'AdminModule:UserAdmin:form', 'idUser' => $user->getId()], 'Edit');
         });
         $this->gb->addAction(function(UserEntity $user) {
-            return LinkBuilder::createAdvLink(['page' => 'delete', 'idUser' => $user->getId()], 'Delete');
+            return LinkBuilder::createAdvLink(['page' => 'AdminModule:UserAdmin:delete', 'idUser' => $user->getId()], 'Delete');
         });
     }
 

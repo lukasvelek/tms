@@ -1,9 +1,10 @@
 function userGridPaginator(_page) {
-    //location.replace('?page=AdminModule:UserAdmin:list&grid_page=' + page);
     $.get("app/ajax/UserAdmin.php", {
         action: "ajaxList",
         page: _page
     }, async function(data) {
-        $("#table").html(data);
+        const obj = JSON.parse(data);
+        $("#table").html(obj.table);
+        $("#table-controls").html(obj.controls);
     });
 }
