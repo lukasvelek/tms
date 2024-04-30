@@ -51,7 +51,13 @@ function ajaxList() {
     $gb->addColumns(['username' => 'Username', 'fullname' => 'Fullname', 'email' => 'Email']);
     $gb->addDataSource($users);
     $gb->addAction(function(UserEntity $user) {
-        return LinkBuilder::createAdvLink(['page' => 'Users:profile', 'idUser' => $user->getId()], 'Profile');
+        return LinkBuilder::createAdvLink(['page' => 'AdminModule:Users:profile', 'idUser' => $user->getId()], 'Profile');
+    });
+    $gb->addAction(function(UserEntity $user) {
+        return LinkBuilder::createAdvLink(['page' => 'AdminModule:UserAdmin:form', 'idUser' => $user->getId()], 'Edit');
+    });
+    $gb->addAction(function(UserEntity $user) {
+        return LinkBuilder::createAdvLink(['page' => 'AdminModule:UserAdmin:delete', 'idUser' => $user->getId()], 'Delete');
     });
 
     echo $gb->build();

@@ -4,6 +4,6 @@ function userGridPaginator(_page) {
         action: "ajaxList",
         page: _page
     }, async function(data) {
-        $("#tablebuilder-table").html(data);
+        $("#table").html(data);
     });
 }

@@ -54,6 +54,17 @@ class TemplateManager {
      */
     public function fill(array $data, string &$subject) {
         foreach($data as $key => $value) {
+            if($key == '$SCRIPTS$') {
+                if(!is_array($value)) {
+                    $subject .= $value;
+                } else {
+                    foreach($value as $v) {
+                        $subject .= $v;
+                    }
+                }
+                continue;
+            }
+
             if(!is_array($value)) {
                 $subject = str_replace($key, $value, $subject);
             } else {

@@ -3,7 +3,6 @@
 namespace App\Modules\AdminModule;
 
 use App\Components\Forms\UserFormFactory;
-use App\Components\Grids\UserGridFactory;
 use App\Constants\FlashMessageTypes;
 use App\Core\CryptManager;
 use App\UI\LinkBuilder;
@@ -17,12 +16,9 @@ class UserAdminPresenter extends AAdminPresenter {
     }
 
     public function renderList() {
-        global $app;
-
-        $userGridFactory = new UserGridFactory($app->getConn(), $app->logger, $app->userRepository);
-
-        $this->template->user_grid = $userGridFactory->createComponent();
-        $this->template->user_grid_control = $userGridFactory->createGridControls();
+        $this->template->scripts = ['<script type="text/javascript">userGridPaginator(0);</script>'];
+        $this->template->user_grid = '';
+        $this->template->user_grid_control = '';
         $this->template->links = [];
         $this->template->links = LinkBuilder::createAdvLink(['page' => 'UserAdmin:form'], 'New user');
     }
