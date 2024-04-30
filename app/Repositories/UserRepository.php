@@ -64,6 +64,16 @@ class UserRepository extends ARepository {
 
         return $count;
     }
+
+    public function createUser(string $username, string $fullname, string $password) {
+        $qb = $this->qb(__METHOD__);
+
+        $qb ->insert('users', ['username', 'fullname', 'password'])
+            ->values([$username, $fullname, $password])
+            ->execute();
+
+        return $qb->fetch();
+    }
 }
 
 ?>

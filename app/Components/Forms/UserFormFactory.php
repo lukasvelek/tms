@@ -4,9 +4,7 @@ namespace App\Components\Forms;
 
 use App\Core\DB\Database;
 use App\Core\Logger\Logger;
-use App\Core\ScriptLoader;
 use App\Repositories\UserRepository;
-use App\UI\FormBuilder\FormBuilder;
 
 class UserFormFactory extends AFormFactory {
     private UserRepository $userRepository;
@@ -30,12 +28,22 @@ class UserFormFactory extends AFormFactory {
     private function createForm() {
         $this->setReducer('/tms/js/forms/UserForm.js');
 
+        $username = '';
+        $fullname = '';
+
+        if($this->idUser !== NULL) {
+            $user = $this->userRepository->getUserById($this->idUser);
+
+            $username = $user->getUsername();
+            $fullname = $user->getFullname();
+        }
+
         $this->fb   ->setMethod('POST')->setAction($this->formHandlerUrl)
                     ->addLabel('Username', 'username', true)
-                    ->addText('username', '', '', true)
+                    ->addText('username', $username, '', true)
 
                     ->addLabel('Fullname', 'fullname', true)
-                    ->addText('fullname', '', '', true)
+                    ->addText('fullname', $fullname, '', true)
 
                     ->addLabel('Password', 'password', true)
                     ->addPassword('password', '', '', true)

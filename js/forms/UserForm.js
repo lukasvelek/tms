@@ -5,8 +5,8 @@ $("#password").on("change", function() {
             $("#password_again").css("border", "1px solid red");
             $("#submit").attr('disabled', true);
         } else {
-            $("#password").css("border", "1px solid black");
-            $("#password_again").css("border", "1px solid black");
+            $("#password").removeAttr("style");
+            $("#password_again").removeAttr("style");
             $("#submit").attr('disabled', false);
         }
     }
@@ -19,8 +19,8 @@ $("#password_again").on("change", function() {
             $("#password_again").css("border", "1px solid red");
             $("#submit").attr('disabled', true);
         } else {
-            $("#password").css("border", "1px solid black");
-            $("#password_again").css("border", "1px solid black");
+            $("#password").removeAttr("style");
+            $("#password_again").removeAttr("style");
             $("#submit").attr('disabled', false);
         }
     }
