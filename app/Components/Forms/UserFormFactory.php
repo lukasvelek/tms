@@ -19,12 +19,6 @@ class UserFormFactory extends AFormFactory {
         $this->createForm();
     }
 
-    public function createComponent() {
-        $this->applyReducer();
-
-        return $this->fb->build();
-    }
-
     private function createForm() {
         $this->setReducer('/tms/js/forms/UserForm.js');
 

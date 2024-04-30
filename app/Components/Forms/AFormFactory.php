@@ -24,6 +24,13 @@ abstract class AFormFactory extends AComponent implements IFactory {
         $this->fb = new FormBuilder();
     }
 
+    public function createComponent() {
+        // before creation
+        $this->applyReducer();
+
+        return $this->fb->build();
+    }
+
     public function setReducer(string $jsReducerSrc) {
         $this->reducerUrl = $jsReducerSrc;
     }
