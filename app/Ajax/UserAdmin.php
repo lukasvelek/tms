@@ -37,7 +37,7 @@ function ajaxList() {
     $offset = GRID_SIZE * $page;
 
     if($offset > 0) {
-        $qb ->offset($page * GRID_SIZE);
+        $qb ->offset($offset);
     }
         
     $qb->execute();

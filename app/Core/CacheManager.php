@@ -29,15 +29,24 @@ class CacheManager {
         $this->category = $category;
     }
 
+    /**
+     * Tries to load client from cache by their ID. If client is not cached, then a callback is called and its returned value is saved to cache.
+     * 
+     * @param int $id Client ID
+     * @param callable $callback Callback that returns the value to be cached
+     * @return ClientEntity|null
+     */
     public function loadClient(int $id, callable $callback) {
         $cacheData = $this->loadFromCache();
 
         if(empty($cacheData)) {
             $result = $callback();
 
-            $cacheData[$id] = $result;
+            if($result !== NULL) {
+                $cacheData[$id] = $result;
 
-            $this->saveToCache($cacheData);
+                $this->saveToCache($cacheData);
+            }
         }
 
         if(array_key_exists($id, $cacheData)) {
@@ -45,23 +54,34 @@ class CacheManager {
         } else {
             $result = $callback();
 
-            $cacheData[$id] = $result;
+            if($result !== NULL) {
+                $cacheData[$id] = $result;
 
-            $this->saveToCache($cacheData);
+                $this->saveToCache($cacheData);
+            }
         }
 
         return $result;
     }
 
+    /**
+     * Tries to load user from cache by their ID. If user is not cached, then a callback is called and its returned value is saved to cache.
+     * 
+     * @param int $id User ID
+     * @param callable $callback Callback that returns the value to be cached
+     * @return UserEntity|null
+     */
     public function loadUser(int $id, callable $callback) {
         $cacheData = $this->loadFromCache();
 
         if(empty($cacheData)) {
             $result = $callback();
 
-            $cacheData[$id] = $result;
+            if($result !== NULL) {
+                $cacheData[$id] = $result;
 
-            $this->saveToCache($cacheData);
+                $this->saveToCache($cacheData);
+            }
         }
 
         if(array_key_exists($id, $cacheData)) {
@@ -69,9 +89,11 @@ class CacheManager {
         } else {
             $result = $callback();
 
-            $cacheData[$id] = $result;
+            if($result !== NULL) {
+                $cacheData[$id] = $result;
 
-            $this->saveToCache($cacheData);
+                $this->saveToCache($cacheData);
+            }
         }
 
         return $result;

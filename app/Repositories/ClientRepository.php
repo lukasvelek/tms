@@ -35,8 +35,8 @@ class ClientRepository extends ARepository {
         });
     }
 
-    public function composeClientQuery() {
-        $qb = $this->qb(__METHOD__);
+    public function composeQueryForGrid(?string $method = null) {
+        $qb = $this->qb($method ?? __METHOD__);
 
         $qb ->select(['*'])
             ->from('clients');
