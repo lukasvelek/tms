@@ -69,8 +69,19 @@ class DatabaseInstaller {
                 'email' => 'VARCHAR(256) NULL',
                 'date_created' => 'DATETIME NOT NULL DEFAULT current_timestamp()',
                 'date_updated' => 'DATETIME NOT NULL DEFAULT current_timestamp()',
-                'last_login_hash' => 'VARCHAR(256) NULL',
-                'is_client' => 'INT(2) NOT NULL'
+                'last_login_hash' => 'VARCHAR(256) NULL'
+            ),
+            'clients' => array(
+                'id' => 'INT(32) NOT NULL PRIMARY KEY AUTO_INCREMENT',
+                'name' => 'VARCHAR(256) NOT NULL',
+                'id_manager' => 'INT(32) NOT NULL',
+                'date_created' => 'DATETIME NOT NULL DEFAULT current_timestamp()'
+            ),
+            'projects' => array(
+                'id' => 'INT(32) NOT NULL PRIMARY KEY AUTO_INCREMENT',
+                'name' => 'VARCHAR(256) NOT NULL',
+                'id_client' => 'INT(32) NOT NULL',
+                'date_created' => 'DATETIME NOT NULL DEFAULT current_timestamp()'
             )
         );
 

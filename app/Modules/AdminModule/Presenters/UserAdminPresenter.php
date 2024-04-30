@@ -16,8 +16,11 @@ class UserAdminPresenter extends AAdminPresenter {
         $this->createSubList();
     }
 
-    public function renderList() {
-        $this->template->scripts = ['<script type="text/javascript">userGridPaginator(0);</script>'];
+    public function renderList(?int $gridPage) {
+        if($gridPage === NULL) {
+            $gridPage = 0;
+        }
+        $this->template->scripts = ['<script type="text/javascript">userGridPaginator(' . $gridPage . ');</script>'];
         $this->template->user_grid = '';
         $this->template->user_grid_control = '';
         $this->template->links = [];

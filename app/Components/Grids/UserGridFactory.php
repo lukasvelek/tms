@@ -37,7 +37,7 @@ class UserGridFactory extends AComponent implements IFactory {
     }
 
     public function createGridControls() {
-        return $this->gb->createGridControls('userGridPaginator', (int)($this->get('grid_page') ?? 0), (int)(ceil($this->userRepository->getUserCount() / GRID_SIZE)));
+        return $this->gb->createGridControls('userGridPaginator', (int)($this->get('gridPage') ?? 0), (int)(ceil($this->userRepository->getUserCount() / GRID_SIZE)));
     }
 
     public function createComponent() {

@@ -29,6 +29,54 @@ class CacheManager {
         $this->category = $category;
     }
 
+    public function loadClient(int $id, callable $callback) {
+        $cacheData = $this->loadFromCache();
+
+        if(empty($cacheData)) {
+            $result = $callback();
+
+            $cacheData[$id] = $result;
+
+            $this->saveToCache($cacheData);
+        }
+
+        if(array_key_exists($id, $cacheData)) {
+            $result = $cacheData[$id];
+        } else {
+            $result = $callback();
+
+            $cacheData[$id] = $result;
+
+            $this->saveToCache($cacheData);
+        }
+
+        return $result;
+    }
+
+    public function loadUser(int $id, callable $callback) {
+        $cacheData = $this->loadFromCache();
+
+        if(empty($cacheData)) {
+            $result = $callback();
+
+            $cacheData[$id] = $result;
+
+            $this->saveToCache($cacheData);
+        }
+
+        if(array_key_exists($id, $cacheData)) {
+            $result = $cacheData[$id];
+        } else {
+            $result = $callback();
+
+            $cacheData[$id] = $result;
+
+            $this->saveToCache($cacheData);
+        }
+
+        return $result;
+    }
+
     /**
      * Saves a flash message to cache
      * 

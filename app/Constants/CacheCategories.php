@@ -7,12 +7,14 @@ class CacheCategories {
     public const RIBBONS = 'ribbons';
     public const PAGES = 'pages';
     public const USERS = 'users';
+    public const CLIENTS = 'clients';
 
     public static array $all = [
         self::FLASH_MESSAGES,
         self::RIBBONS,
         self::PAGES,
-        self::USERS
+        self::USERS,
+        self::CLIENTS
     ];
 }
 

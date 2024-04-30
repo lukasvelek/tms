@@ -18,11 +18,7 @@ class UserRepository extends ARepository {
     }
 
     public function getUserById(int $id) {
-        $cachedUser = $this->cm->loadUserByIdFromCache($id);
-
-        if($cachedUser !== NULL) {
-            return $cachedUser;
-        } else {
+        return $this->cm->loadClient($id, function() use ($id) {
             $qb = $this->qb(__METHOD__);
 
             $qb ->select(['*'])
@@ -30,14 +26,13 @@ class UserRepository extends ARepository {
                 ->where('id = ?', [$id])
                 ->execute();
 
-            $row = $qb->fetch();
-
-            $user = UserEntity::createUserEntityFromDbRow($row);
-
-            $this->cm->saveUserToCache($user);
-
+            $user = null;
+            while($row = $qb->fetchAssoc()) {
+                $user = UserEntity::createUserEntityFromDbRow($row);
+            }
+            
             return $user;
-        }
+        });
     }
 
     public function composeQueryForGrid(?string $method = null) {

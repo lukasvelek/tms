@@ -11,7 +11,11 @@ class ClientAdminPresenter extends AAdminPresenter {
         $this->createSubList();
     }
 
-    public function renderList() {
+    public function renderList(?int $gridPage) {
+        if($gridPage === NULL) {
+            $gridPage = 0;
+        }
+        $this->template->scripts = ['<script type="text/javascript">clientGridPaginator(' . $gridPage . ');</script>'];
         $this->template->client_grid = '';
         $this->template->client_grid_control = '';
         $this->template->links = [];

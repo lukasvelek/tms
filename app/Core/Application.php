@@ -13,6 +13,7 @@ use App\Core\FileManager;
 use App\Entities\UserEntity;
 use App\Helpers\ArrayStringHelper;
 use App\Modules\IPresenter;
+use App\Repositories\ClientRepository;
 use App\Repositories\UserRepository;
 use Exception;
 
@@ -49,6 +50,7 @@ class Application {
     public ServiceManager $serviceManager;
 
     public UserRepository $userRepository;
+    public ClientRepository $clientRepository;
 
     public UserAuthenticator $userAuthenticator;
 
@@ -80,6 +82,7 @@ class Application {
         $this->userAuthenticator = new UserAuthenticator($this->conn, $this->logger);
 
         $this->userRepository = new UserRepository($this->conn, $this->logger);
+        $this->clientRepository = new ClientRepository($this->conn, $this->logger);
         
         $sessionDestroyed = false;
         if($install) {
