@@ -3,7 +3,9 @@
 namespace App\Modules\AdminModule;
 
 use App\Components\Forms\ClientFormFactory;
+use App\Constants\FlashMessageTypes;
 use App\UI\LinkBuilder;
+use Exception;
 
 class ClientAdminPresenter extends AAdminPresenter {
     public function __construct() {
@@ -33,6 +35,45 @@ class ClientAdminPresenter extends AAdminPresenter {
         $this->template->links = [];
         $this->template->links[] = LinkBuilder::createAdvLink(['page' => 'ClientAdmin:list'], '&larr; Back');
         $this->template->form = $clientFormFactory->createComponent();
+    }
+
+    public function handleForm() {
+        global $app;
+
+        if(isset($_POST) && !empty($_POST) && isset($_POST['client_name'], $_POST['manager'])) {
+            $clientName = $this->httpPost('client_name');
+            $idManager = $this->httpPost('manager');
+
+            $result = $app->clientRepository->createClient($clientName, $idManager);
+
+            if($result === NULL) {
+                $app->flashMessage('Client \'' . $clientName . '\' created.', FlashMessageTypes::INFO);
+                $app->redirect('list');
+            } else {
+                throw new Exception($result);
+            }
+        }
+    }
+
+    public function renderDelete() {
+        global $app;
+
+        $idClient = $this->httpGet('idClient');
+
+        if($idClient === NULL) {
+            $app->flashMessage('No client selected.', FlashMessageTypes::ERROR);
+            $app->redirect('list');
+        }
+
+        $client = $app->clientRepository->getClientById($idClient);
+
+        $this->template->name = $client->getName();
+        $this->template->links = [];
+        $this->template->links[] = LinkBuilder::createAdvLink(['page' => 'ClientAdmin:list'], '&larr; Back');
+
+        $button = '<button type="button" onclick="location.href = \'\?page=AdminModule:ClientAdmin:delete&isDelete=1&idClient=' . $idClient . '\';">Delete</button>';
+
+        $this->template->form = $button;
     }
 }
 

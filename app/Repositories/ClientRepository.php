@@ -22,7 +22,7 @@ class ClientRepository extends ARepository {
             $qb = $this->qb(__METHOD__);
 
             $qb ->select(['*'])
-                ->from('users')
+                ->from('clients')
                 ->where('id = ?', [$id])
                 ->execute();
 
@@ -58,6 +58,16 @@ class ClientRepository extends ARepository {
         }
 
         return $count;
+    }
+
+    public function createClient(string $clientName, int $idManager) {
+        $qb = $this->qb(__METHOD__);
+
+        $qb ->insert('clients', ['name', 'id_manager'])
+            ->values([$clientName, $idManager])
+            ->execute();
+
+        return $qb->fetch();
     }
 }
 
