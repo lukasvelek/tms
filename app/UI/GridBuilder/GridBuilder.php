@@ -273,28 +273,45 @@ class GridBuilder {
     }
 
     public function createGridControls(string $jsHandlerName, int $page, int $lastPage) {
-        $btn = function(string $text, int $newPage) use ($jsHandlerName, $page, $lastPage) {
-            $code = '<button type="button" class="grid-control-button" onclick="' . $jsHandlerName . '(';
+        $firstButton = '<button type="button" class="grid-control-button" onclick="' . $jsHandlerName . '(';
 
-            $disabled = '';
+        if($page == 0) {
+            $firstButton .= '0)" disabled>';
+        } else {
+            $firstButton .= '0)">';
+        }
 
-            if($newPage < 1) {
-                $newPage = 1;
-                $disabled = ' disabled';
-            } else if($newPage > $lastPage) {
-                $newPage = $lastPage;
-                $disabled = ' disabled';
-            }
+        $firstButton .= '&lt;&lt;</button>';
 
-            $code .= $page . ')"' . $disabled . '>' . $text . '</button>';
+        $previousButton = '<button type="button" class="grid-control-button" onclick="' . $jsHandlerName . '(';
 
-            return $code;
-        };
+        if($page == 0) {
+            $previousButton .= '0)" disabled>';
+        } else {
+            $previousButton .= ($page - 1) . ')">';
+        }
 
-        $firstButton = $btn('&lt;&lt;', 1);
-        $previousButton = $btn('&lt;', ($page - 1));
-        $nextButton = $btn('&gt;', ($page + 1));
-        $lastButton = $btn('&gt;&gt;', $lastPage);;
+        $previousButton .= '&lt;</button>';
+
+        $nextButton = '<button type="button" class="grid-control-button" onclick="' . $jsHandlerName . '(';
+
+        if(($page + 1) >= $lastPage) {
+            $nextButton .= $lastPage . ')" disabled>';
+        } else {
+            $nextButton .= ($page + 1) . ')">';
+        }
+
+        $nextButton .= '&gt;</button>';
+
+        $lastButton = '<button type="button" class="grid-control-button" onclick="' . $jsHandlerName . '(';
+
+        if(($page + 1) >= $lastPage) {
+            $lastButton .= $lastPage . ')" disabled>';
+        } else {
+            $lastButton .= $lastPage . ')">';
+        }
+
+        $lastButton .= '&gt;&gt;</button>';
         
         $code = $firstButton . $previousButton . $nextButton . $lastButton;
 

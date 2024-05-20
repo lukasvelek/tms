@@ -17,6 +17,19 @@ class UserRepository extends ARepository {
         $this->cm = CacheManager::getTemporaryObject(CacheCategories::USERS);
     }
 
+    public function getAllUsers() {
+        $qb = $this->composeQueryForGrid(__METHOD__);
+        
+        $qb->execute();
+
+        $users = [];
+        while($row = $qb->fetchAssoc()) {
+            $users[] = UserEntity::createUserEntityFromDbRow($row);
+        }
+
+        return $users;
+    }
+
     public function getUserById(int $id) {
         return $this->cm->loadClient($id, function() use ($id) {
             $qb = $this->qb(__METHOD__);
