@@ -16,7 +16,7 @@ class UserGridFactory extends AComponent implements IFactory {
 
     private GridBuilder $gb;
 
-    public function __construct(Database $db, Logger $logger, UserRepository $userRepository) {
+    public function __construct(Database $db, Logger $logger, UserRepository $userRepository, string $filter = 'default', array $data = []) {
         parent::__construct($db, $logger);
 
         $this->userRepository = $userRepository;
@@ -24,7 +24,7 @@ class UserGridFactory extends AComponent implements IFactory {
         $this->gb = new GridBuilder();
 
         $this->gb->addColumns(['username' => 'Username', 'fullname' => 'Fullname', 'email' => 'Email']);
-        $this->gb->addDataSource($this->getUsersForGrid());
+        $this->gb->addDataSource($this->getUsersForGrid($filter, $data));
         $this->gb->addAction(function(UserEntity $user) {
             return LinkBuilder::createAdvLink(['page' => 'AdminModule:Users:profile', 'idUser' => $user->getId()], 'Profile');
         });
@@ -44,7 +44,7 @@ class UserGridFactory extends AComponent implements IFactory {
         return $this->gb->build();
     }
 
-    private function getUsersForGrid() {
+    private function getUsersForGrid(string $filter, array $data) {
         $page = $this->get('grid_page');
 
         if($page !== NULL && $page > 0) {
@@ -65,7 +65,19 @@ class UserGridFactory extends AComponent implements IFactory {
 
         $users = [];
         while($row = $qb->fetchAssoc()) {
-            $users[] = UserEntity::createUserEntityFromDbRow($row);
+            switch($filter) {
+                case 'usersForClient':
+                    if(in_array($row['id'], $data['users'])) {
+                        $users[] = UserEntity::createUserEntityFromDbRow($row);
+                    }
+
+                    break;
+
+                case 'default':
+                    $users[] = UserEntity::createUserEntityFromDbRow($row);
+                    
+                    break;
+            }
         }
 
         return $users;

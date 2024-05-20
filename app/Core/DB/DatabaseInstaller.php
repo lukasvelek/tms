@@ -82,6 +82,11 @@ class DatabaseInstaller {
                 'name' => 'VARCHAR(256) NOT NULL',
                 'id_client' => 'INT(32) NOT NULL',
                 'date_created' => 'DATETIME NOT NULL DEFAULT current_timestamp()'
+            ),
+            'client_users' => array(
+                'id' => 'INT(32) NOT NULL PRIMARY KEY AUTO_INCREMENT',
+                'id_client' => 'INT(32) NOT NULL',
+                'id_user' => 'INT(32) NOT NULL'
             )
         );
 

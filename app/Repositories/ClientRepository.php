@@ -69,6 +69,33 @@ class ClientRepository extends ARepository {
 
         return $qb->fetch();
     }
+
+    public function deleteClient(int $id) {
+        $qb = $this->qb(__METHOD__);
+
+        $qb ->delete()
+            ->from('clients')
+            ->where('id = ?', [$id])
+            ->execute();
+
+        return $qb->fetch();
+    }
+
+    public function getUsersForClient(int $id) {
+        $qb = $this->qb(__METHOD__);
+
+        $qb ->select(['*'])
+            ->from('client_users')
+            ->where('id_client = ?', [$id])
+            ->execute();
+
+        $users = [];
+        while($row = $qb->fetchAssoc()) {
+            $users[] = $row['id_user'];
+        }
+
+        return $users;
+    }
 }
 
 ?>

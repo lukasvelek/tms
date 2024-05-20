@@ -22,7 +22,7 @@ class ClientAdminPresenter extends AAdminPresenter {
         $this->template->client_grid = '';
         $this->template->client_grid_control = '';
         $this->template->links = [];
-        $this->template->links = LinkBuilder::createAdvLink(['page' => 'ClientAdmin:form'], 'New client');
+        $this->template->links[] = LinkBuilder::createAdvLink(['page' => 'ClientAdmin:form'], 'New client');
     }
 
     public function renderForm() {

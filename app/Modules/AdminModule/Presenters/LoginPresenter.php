@@ -5,6 +5,7 @@ namespace App\Modules\AdminModule;
 use App\Constants\FlashMessageTypes;
 use App\Modules\APresenter;
 use App\UI\FormBuilder\FormBuilder;
+use Exception;
 
 class LoginPresenter extends APresenter {
     public function __construct() {
@@ -16,6 +17,10 @@ class LoginPresenter extends APresenter {
 
         if(isset($_SESSION['id_current_user'])) {
             $user = $app->userRepository->getUserById($_SESSION['id_current_user']);
+
+            if($user === NULL) {
+                throw new Exception('User #' . $_SESSION['id_current_user'] . ' does not exist!');
+            }
 
             $app->setCurrentUser($user);
 

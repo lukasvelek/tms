@@ -31,7 +31,7 @@ class UserRepository extends ARepository {
     }
 
     public function getUserById(int $id) {
-        return $this->cm->loadClient($id, function() use ($id) {
+        return $this->cm->loadUser($id, function() use ($id) {
             $qb = $this->qb(__METHOD__);
 
             $qb ->select(['*'])
