@@ -37,7 +37,7 @@ class ClientGridFactory extends AComponent implements IFactory {
             }
         });
         $this->gb->addAction(function(ClientEntity $client) {
-            return LinkBuilder::createAdvLink(['page' => 'AdminModule:ClientAdmin:profile', 'idClient' => $client->getId()], 'Profile');
+            return LinkBuilder::createAdvLink(['page' => 'AdminModule:Clients:profile', 'idClient' => $client->getId()], 'Profile');
         });
         $this->gb->addAction(function(ClientEntity $client) {
             return LinkBuilder::createAdvLink(['page' => 'AdminModule:ClientAdmin:form', 'idClient' => $client->getId()], 'Edit');
