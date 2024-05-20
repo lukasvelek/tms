@@ -56,7 +56,7 @@ class ClientFormFactory extends AFormFactory {
                     ->addLabel('Manager', 'manager', true)
                     ->addElement($this->fb->createSelect()->setName('manager')->addOptionsBasedOnArray($usersArr))
 
-                    ->addElement($this->fb->createSubmit('Create'))
+                    ->addElement($this->fb->createSubmit(($this->idClient === NULL) ? 'Create' : 'Save'))
         ;
     }
 }

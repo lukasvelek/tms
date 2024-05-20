@@ -45,7 +45,7 @@ class UserFormFactory extends AFormFactory {
                     ->addLabel('Password again', 'password_again', true)
                     ->addPassword('password_again', '', '', true)
 
-                    ->addElement($this->fb->createSubmit('Create'));
+                    ->addElement($this->fb->createSubmit(($this->idUser === NULL) ? 'Create' : 'Save'));
     }
 }
 
