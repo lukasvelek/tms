@@ -83,6 +83,9 @@ class UserAdminPresenter extends AAdminPresenter {
             } else {
                 throw new Exception($result);
             }
+        } else {
+            $app->flashMessage('No user could not be deleted because no confirmation was given.');
+            $app->redirect('list');
         }
     }
 

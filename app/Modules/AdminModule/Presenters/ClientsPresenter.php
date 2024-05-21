@@ -25,12 +25,11 @@ class ClientsPresenter extends APresenter {
 
         $this->template->name = $client->getName();
         $this->template->links = [];
-        $this->template->grid_links = [];
-        $this->template->grid_links[] = LinkBuilder::createAdvLink(['page' => 'Clients:addUserForm', 'idClient' => $idClient], 'Add user');
         $this->template->profile = '
             <p><b>Manager: </b>' . $manager->getFullname() . '</p>
         ';
         $this->template->user_grid = $userGridFactory->createComponent();
+        $this->template->user_grid_control = $userGridFactory->createGridControls();
     }
 }
 

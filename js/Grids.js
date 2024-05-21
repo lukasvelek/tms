@@ -19,3 +19,15 @@ function clientGridPaginator(_page) {
         $("#table-controls").html(obj.controls);
     });
 }
+
+function clientUsersGridPaginator(_page, _idClient) {
+    $.get("app/ajax/ClientAdmin.php", {
+        action: "ajaxUsersList",
+        page: _page,
+        idClient: _idClient
+    }, async function(data) {
+        const obj = JSON.parse(data);
+        $("#table").html(obj.table);
+        $("#table-controls").html(obj.controls);
+    })
+}

@@ -19,8 +19,6 @@ class ClientAdminPresenter extends AAdminPresenter {
             $gridPage = 0;
         }
         $this->template->scripts = ['<script type="text/javascript">clientGridPaginator(' . $gridPage . ');</script>'];
-        $this->template->client_grid = '';
-        $this->template->client_grid_control = '';
         $this->template->links = [];
         $this->template->links[] = LinkBuilder::createAdvLink(['page' => 'ClientAdmin:form'], 'New client');
     }
@@ -74,6 +72,57 @@ class ClientAdminPresenter extends AAdminPresenter {
         $button = '<button type="button" onclick="location.href = \'\?page=AdminModule:ClientAdmin:delete&isDelete=1&idClient=' . $idClient . '\';">Delete</button>';
 
         $this->template->form = $button;
+    }
+
+    public function handleDelete() {
+        global $app;
+        
+        $isDelete = $this->httpGet('isDelete');
+
+        if($isDelete == '1') {
+            $idClient = $this->httpGet('idClient');
+
+            if($idClient === NULL) {
+                $app->flashMessage('No client selected.', FlashMessageTypes::ERROR);
+                $app->redirect('list');
+            }
+
+            $client = $app->clientRepository->getClientById($idClient);
+
+            $result = $app->clientRepository->deleteClient($idClient);
+
+            if($result === NULL) {
+                $app->flashMessage('Client \'' . $client->getName() . '\' deleted.', FlashMessageTypes::SUCCESS);
+                $app->redirect('list');
+            } else {
+                throw new Exception($result);
+            }
+        } else {
+            $app->flashMessage('No user could not be deleted because no confirmation was given.');
+            $app->redirect('list');
+        }
+    }
+
+    public function renderManageUsersList(?int $gridPage) {
+        global $app;
+
+        $idClient = $this->httpGet('idClient');
+        $client = $app->clientRepository->getClientById($idClient);
+
+        if($gridPage === NULL) {
+            $gridPage = 0;
+        }
+
+        $this->template->scripts = ['<script type="text/javascript">clientUsersGridPaginator(' . $gridPage . ', ' . $idClient . ');</script>'];
+        $this->template->client_name = $client->getName();
+        $this->template->links = [];
+        $this->template->links[] = LinkBuilder::createAdvLink(['page' => 'ClientAdmin:addUserForm', 'idClient' => $idClient], 'Add user');
+    }
+
+    public function renderAddUserForm() {
+        global $app;
+
+        $idClient = $this->httpGet('idClient');
     }
 }
 

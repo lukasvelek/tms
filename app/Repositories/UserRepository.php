@@ -91,6 +91,15 @@ class UserRepository extends ARepository {
             ->where('id = ?', [$id])
             ->execute();
 
+        $qb->fetch();
+
+        $qb->clean();
+
+        $qb ->delete()
+            ->from('client_users')
+            ->where('id_user = ?', [$id])
+            ->execute();
+
         return $qb->fetch();
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Components\Grids\ClientGridFactory;
+use App\Components\Grids\ClientUsersGridFactory;
 use App\Entities\ClientEntity;
 
 require_once('Ajax.php');
@@ -28,28 +29,21 @@ try {
 function ajaxList() {
     global $db, $logger, $clientRepository, $userRepository;
 
-    $page = get('page');
-
-    $qb = $clientRepository->composeQueryForGrid(__METHOD__);
-
-    $offset = GRID_SIZE * $page;
-
-    if($offset > 0) {
-        $qb ->offset($offset);
-    }
-
-    $qb->execute();
-
-    $clients = [];
-    while($row = $qb->fetchAssoc()) {
-        $clients[] = ClientEntity::createClientEntityFromDbRow($row);
-    }
-
     $cgf = new ClientGridFactory($db, $logger, $clientRepository, $userRepository);
 
     $json = json_encode(['table' => $cgf->createComponent(), 'controls' => $cgf->createGridControls()]);
 
-    echo $json;
+    return $json;
+}
+
+function ajaxUsersList() {
+    global $db, $logger, $clientRepository, $userRepository;
+
+    $cugf = new ClientUsersGridFactory($db, $logger, $clientRepository, $userRepository);
+
+    $json = json_encode(['table' => $cugf->createComponent(), 'controls' => $cugf->createGridControls()]);
+
+    return $json;
 }
 
 exit;

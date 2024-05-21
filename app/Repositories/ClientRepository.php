@@ -78,6 +78,15 @@ class ClientRepository extends ARepository {
             ->where('id = ?', [$id])
             ->execute();
 
+        $qb->fetch();
+
+        $qb->clean();
+
+        $qb ->delete()
+            ->from('client_users')
+            ->where('id_client = ?', [$id])
+            ->execute();
+
         return $qb->fetch();
     }
 
@@ -95,6 +104,19 @@ class ClientRepository extends ARepository {
         }
 
         return $users;
+    }
+
+    public function getUserCountForClient(int $id) {
+        $qb = $this->qb(__METHOD__);
+
+        $qb ->select(['id_user'])
+            ->from('client_users')
+            ->where('id_client = ?', [$id])
+            ->execute();
+
+        if($qb->fetchAll() !== NULL) {
+            return $qb->fetchAll()->num_rows;
+        }
     }
 }
 
