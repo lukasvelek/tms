@@ -80,6 +80,8 @@ class ClientRepository extends ARepository {
 
         $qb->fetch();
 
+        $this->cm->invalidateCache();
+
         $qb->clean();
 
         $qb ->delete()
