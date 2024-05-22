@@ -102,6 +102,38 @@ class UserRepository extends ARepository {
 
         return $qb->fetch();
     }
+
+    public function getAllUsersExceptFor(array $ids) {
+        $qb = $this->qb(__METHOD__);
+
+        $qb ->select(['*'])
+            ->from('users')
+            ->where($qb->getColumnNotInValues('id', $ids))
+            ->execute();
+
+        $users = [];
+        while($row = $qb->fetchAssoc()) {
+            $users[] = UserEntity::createUserEntityFromDbRow($row);
+        }
+
+        return $users;
+    }
+
+    public function getUsersByIds(array $ids) {
+        $qb = $this->qb(__METHOD__);
+
+        $qb ->select(['*'])
+            ->from('users')
+            ->where($qb->getColumnInValues('id', $ids))
+            ->execute();
+
+        $users = [];
+        while($row = $qb->fetchAssoc()) {
+            $users[] = UserEntity::createUserEntityFromDbRow($row);
+        }
+
+        return $users;
+    }
 }
 
 ?>

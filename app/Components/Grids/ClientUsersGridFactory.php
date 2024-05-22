@@ -6,9 +6,11 @@ use App\Components\AComponent;
 use App\Components\IFactory;
 use App\Core\DB\Database;
 use App\Core\Logger\Logger;
+use App\Entities\UserEntity;
 use App\Repositories\ClientRepository;
 use App\Repositories\UserRepository;
 use App\UI\GridBuilder;
+use App\UI\LinkBuilder;
 
 class ClientUsersGridFactory extends AComponent implements IFactory {
     private ClientRepository $clientRepository;
@@ -24,6 +26,10 @@ class ClientUsersGridFactory extends AComponent implements IFactory {
         $this->gb = new GridBuilder();
 
         $this->gb->addColumns(['fullname' => 'Fullname']);
+        $this->gb->addDataSource($this->getData());
+        $this->gb->addAction(function(UserEntity $user) {
+            return LinkBuilder::createAdvLink(['page' => 'AdminModule:ClientAdmin:removeUserForm', 'idClient' => $this->get('idClient'), 'idUser' => $user->getId()], 'Remove');
+        });
     }
 
     public function createGridControls() {
@@ -32,6 +38,16 @@ class ClientUsersGridFactory extends AComponent implements IFactory {
 
     public function createComponent() {
         return $this->gb->build();
+    }
+
+    private function getData() {
+        $idUsers = $this->clientRepository->getUsersForClient($this->get('idClient'));
+
+        if(empty($idUsers)) {
+            return [];
+        }
+
+        return $this->userRepository->getUsersByIds($idUsers);
     }
 }
 

@@ -2,6 +2,7 @@
 
 namespace App\Modules\AdminModule;
 
+use App\Components\Forms\ClientAddUserFormFactory;
 use App\Components\Forms\ClientFormFactory;
 use App\Constants\FlashMessageTypes;
 use App\UI\LinkBuilder;
@@ -79,6 +80,10 @@ class ClientAdminPresenter extends AAdminPresenter {
         
         $isDelete = $this->httpGet('isDelete');
 
+        if($isDelete === NULL) {
+            return;
+        }
+
         if($isDelete == '1') {
             $idClient = $this->httpGet('idClient');
 
@@ -123,6 +128,75 @@ class ClientAdminPresenter extends AAdminPresenter {
         global $app;
 
         $idClient = $this->httpGet('idClient');
+
+        $client = $app->clientRepository->getClientById($idClient);
+
+        $cauff = new ClientAddUserFormFactory($app->getConn(), $app->logger, $app->userRepository, $app->clientRepository, '?page=AdminModule:ClientAdmin:addUserForm&idClient=' . $idClient, $idClient);
+
+        $this->template->form = $cauff->createComponent();
+        $this->template->client_name = $client->getName();
+        $this->template->links = [];
+    }
+
+    public function handleAddUserForm() {
+        global $app;
+
+        $idClient = $this->httpGet('idClient');
+        $idUser = $this->httpPost('user');
+
+        if($idClient === NULL || $idUser === NULL) {
+            return;
+        }
+        
+        $user = $app->userRepository->getUserById($idUser);
+        $client = $app->clientRepository->getClientById($idClient);
+
+        $app->clientRepository->addUserToClient($idClient, $idUser);
+
+        $app->flashMessage('User \'' . $user->getFullname() . '\' added to client \'' . $client->getName() . '\'.', FlashMessageTypes::SUCCESS);
+        $app->redirect('manageUsersList', ['idClient' => $idClient]);
+    }
+
+    public function renderRemoveUserForm() {
+        global $app;
+
+        $idClient = $this->httpGet('idClient');
+        $idUser = $this->httpGet('idUser');
+
+        if($idClient === NULL || $idUser === NULL) {
+            $app->flashMessage('Not enough parameters passed.', FlashMessageTypes::ERROR);
+            $app->redirect('manageUsersList', ['idClient' => $idClient]);
+        }
+
+        $user = $app->userRepository->getUserById($idUser);
+        $client = $app->clientRepository->getClientById($idClient);
+
+        $this->template->client_name = $client->getName();
+        $this->template->user_name = $user->getFullname();
+        $this->template->links = [];
+        $this->template->links[] = LinkBuilder::createAdvLink(['page' => 'manageUsersList', 'idClient' => $idClient], '&larr; Back');
+
+        $button = '<button type="button" onclick="location.href = \'?page=AdminModule:ClientAdmin:removeUserForm&isDelete=1&idClient=' . $idClient .'&idUser=' . $idUser . '\'">Remove</button>';
+
+        $this->template->form = $button;
+    }
+
+    public function handleRemoveUserForm() {
+        global $app;
+
+        $idClient = $this->httpGet('idClient');
+        $idUser = $this->httpGet('idUser');
+        $isDelete = $this->httpGet('isDelete');
+
+        if($isDelete !== NULL && $isDelete == '1' && ($idUser !== NULL && $idClient !== NULL)) {
+            $app->clientRepository->removeUserFromClient($idClient, $idUser);
+
+            $client = $app->clientRepository->getClientById($idClient);
+            $user = $app->userRepository->getUserById($idUser);
+
+            $app->flashMessage('User \'' . $user->getFullname() . '\' removed from client \'' . $client->getName() . '\'.', FlashMessageTypes::SUCCESS);
+            $app->redirect('manageUsersList', ['idClient' => $idClient]);
+        }
     }
 }
 

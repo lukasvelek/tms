@@ -118,6 +118,28 @@ class ClientRepository extends ARepository {
             return $qb->fetchAll()->num_rows;
         }
     }
+
+    public function addUserToClient(int $idClient, int $idUser) {
+        $qb = $this->qb(__METHOD__);
+
+        $qb ->insert('client_users', ['id_client', 'id_user'])
+            ->values([$idClient, $idUser])
+            ->execute();
+
+        return $qb->fetch();
+    }
+
+    public function removeUserFromClient(int $idClient, int $idUser) {
+        $qb = $this->qb(__METHOD__);
+        
+        $qb ->delete()
+            ->from('client_users')
+            ->where('id_user = ?', [$idUser])
+            ->andWhere('id_client = ?', [$idClient])
+            ->execute();
+
+        return $qb->fetch();
+    }
 }
 
 ?>
