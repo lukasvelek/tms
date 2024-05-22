@@ -1,4 +1,4 @@
 config.local.php
-cache/
-logs/
+cache/*
+logs/*
 app/Core/install
