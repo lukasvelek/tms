@@ -25,9 +25,9 @@ try {
 }
 
 function ajaxProjectList() {
-    global $db, $logger, $clientRepository, $projectRepository;
+    global $db, $logger, $clientRepository, $projectRepository, $userRepository;
 
-    $pgf = new ProjectGridFactory($db, $logger, $clientRepository, $projectRepository);
+    $pgf = new ProjectGridFactory($db, $logger, $clientRepository, $projectRepository, $userRepository);
 
     $json = json_encode(['table' => $pgf->createComponent(), 'controls' => $pgf->createGridControls()]);
 
