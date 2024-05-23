@@ -34,4 +34,6 @@ function ajaxProjectList() {
     return $json;
 }
 
+exit;
+
 ?>

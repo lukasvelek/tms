@@ -74,6 +74,18 @@ class DatabaseInstaller {
                 'id' => 'INT(32) NOT NULL PRIMARY KEY AUTO_INCREMENT',
                 'id_client' => 'INT(32) NOT NULL',
                 'id_user' => 'INT(32) NOT NULL'
+            ),
+            'tickets' => array(
+                'id' => 'INT(32) NOT NULL PRIMARY KEY AUTO_INCREMENT',
+                'id_resolver' => 'INT(32) NULL',
+                'id_author' => 'INT(32) NOT NULL',
+                'title' => 'VARCHAR(256) NOT NULL',
+                'description' => 'TEXT NOT NULL',
+                'id_project' => 'INT(32) NOT NULL',
+                'status' => 'INT(4) NOT NULL',
+                'date_created' => 'DATETIME NOT NULL DEFAULT current_timestamp()',
+                'date_due' => 'DATETIME NULL',
+                'date_updated' => 'DATETIME NOT NULL DEFAULT current_timestamp()'
             )
         );
 

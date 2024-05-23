@@ -5,6 +5,7 @@ use App\Core\FileManager;
 use App\Core\Logger\Logger;
 use App\Repositories\ClientRepository;
 use App\Repositories\ProjectRepository;
+use App\Repositories\TicketRepository;
 use App\Repositories\UserRepository;
 
 session_start();
@@ -134,5 +135,6 @@ $db = new Database(DB_SERVER, DB_USER, DB_PASS, DB_NAME, $logger);
 $userRepository = new UserRepository($db, $logger);
 $clientRepository = new ClientRepository($db, $logger);
 $projectRepository = new ProjectRepository($db, $logger);
+$ticketRepository = new TicketRepository($db, $logger);
 
 ?>

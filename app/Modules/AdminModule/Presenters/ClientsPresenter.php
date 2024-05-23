@@ -4,7 +4,6 @@ namespace App\Modules\AdminModule;
 
 use App\Components\Grids\UserGridFactory;
 use App\Modules\APresenter;
-use App\UI\LinkBuilder;
 
 class ClientsPresenter extends APresenter {
     public function __construct() {

@@ -13,34 +13,17 @@ class TicketStatus {
     public const BACKLOG = 8;
 
     public static function toString(int $status) {
-        switch($status) {
-            case self::NEW:
-                return 'New';
-
-            case self::IN_PROGRESS:
-                return 'In progress';
-
-            case self::WAITING_FOR_CUSTOMER:
-                return 'Waiting for customer';
-
-            case self::CANCELLED:
-                return 'Cancelled';
-
-            case self::CLOSED:
-                return 'Closed';
-
-            case self::WAITING_FOR_APPROVAL:
-                return 'Waiting for approval';
-
-            case self::APPROVED:
-                return 'Approved';
-
-            case self::BACKLOG:
-                return 'Backlog';
-
-            default:
-                return 'Unknown';
-        }
+        return match($status) {
+            self::NEW => 'New',
+            self::IN_PROGRESS => 'In progress',
+            self::WAITING_FOR_CUSTOMER => 'Waiting for customer',
+            self::CANCELLED => 'Cancelled',
+            self::CLOSED => 'Closed',
+            self::WAITING_FOR_APPROVAL => 'Waiting for approval',
+            self::APPROVED => 'Approved',
+            self::BACKLOG => 'Backlog',
+            default => '-'
+        };
     }
 }
 

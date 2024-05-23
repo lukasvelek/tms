@@ -8,8 +8,9 @@ class TicketEntity extends AEntity {
     private int $idAuthor;
     private ?int $idResolver;
     private int $status;
+    private ?string $dateDue;
 
-    public function __construct(int $id, string $dateCreated, string $dateUpdated, string $title, string $description, int $idAuthor, ?int $idResolver, int $status) {
+    public function __construct(int $id, string $dateCreated, string $dateUpdated, string $title, string $description, int $idAuthor, ?int $idResolver, int $status, ?string $dateDue) {
         parent::__construct($id, $dateCreated, $dateUpdated);
 
         $this->title = $title;
@@ -17,6 +18,7 @@ class TicketEntity extends AEntity {
         $this->idAuthor = $idAuthor;
         $this->idResolver = $idResolver;
         $this->status = $status;
+        $this->dateDue = $dateDue;
     }
 
     public function getTitle() {
@@ -37,6 +39,10 @@ class TicketEntity extends AEntity {
 
     public function getStatus() {
         return $this->status;
+    }
+
+    public static function createTicketEntityFromDbRow($row) {
+        return new self($row['id'], $row['date_created'], $row['date_updated'], $row['title'], $row['description'], $row['id_author'], $row['id_resolver'], $row['status'], $row['date_due']);
     }
 }
 
