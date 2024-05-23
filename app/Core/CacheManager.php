@@ -29,6 +29,34 @@ class CacheManager {
         $this->category = $category;
     }
 
+    public function load(int $id, callable $callback) {
+        $cacheData = $this->loadFromCache();
+
+        if(empty($cacheData)) {
+            $result = $callback();
+
+            if($result !== NULL) {
+                $cacheData[$id] = $result;
+
+                $this->saveToCache($cacheData);
+            }
+        }
+
+        if(array_key_exists($id, $cacheData)) {
+            $result = $cacheData[$id];
+        } else {
+            $result = $callback();
+
+            if($result !== NULL) {
+                $cacheData[$id] = $result;
+
+                $this->saveToCache($cacheData);
+            }
+        }
+
+        return $result;
+    }
+
     /**
      * Tries to load client from cache by their ID. If client is not cached, then a callback is called and its returned value is saved to cache.
      * 

@@ -2,21 +2,6 @@
 
 namespace App\Core\DB;
 
-use App\Constants\ArchiveStatus;
-use App\Constants\ArchiveType;
-use App\Constants\BulkActionRights;
-use App\Constants\DocumentAfterShredActions;
-use App\Constants\DocumentRank;
-use App\Constants\DocumentShreddingStatus;
-use App\Constants\DocumentStatus;
-use App\Constants\FileStorageSystemLocations;
-use App\Constants\ProcessStatus;
-use App\Constants\ProcessTypes;
-use App\Constants\Ribbons;
-use App\Constants\UserActionRights;
-use App\Constants\UserStatus;
-use App\Core\AppConfiguration;
-use App\Core\CryptManager;
 use App\Core\Logger\LogFileTypes;
 use App\Core\Logger\Logger;
 
@@ -81,6 +66,8 @@ class DatabaseInstaller {
                 'id' => 'INT(32) NOT NULL PRIMARY KEY AUTO_INCREMENT',
                 'name' => 'VARCHAR(256) NOT NULL',
                 'id_client' => 'INT(32) NOT NULL',
+                'status' => 'INT(4) NOT NULL',
+                'id_project_manager' => 'INT(32) NOT NULL',
                 'date_created' => 'DATETIME NOT NULL DEFAULT current_timestamp()'
             ),
             'client_users' => array(

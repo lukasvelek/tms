@@ -14,6 +14,7 @@ use App\Entities\UserEntity;
 use App\Helpers\ArrayStringHelper;
 use App\Modules\IPresenter;
 use App\Repositories\ClientRepository;
+use App\Repositories\ProjectRepository;
 use App\Repositories\UserRepository;
 use Exception;
 
@@ -51,6 +52,7 @@ class Application {
 
     public UserRepository $userRepository;
     public ClientRepository $clientRepository;
+    public ProjectRepository $projectRepository;
 
     public UserAuthenticator $userAuthenticator;
 
@@ -83,6 +85,7 @@ class Application {
 
         $this->userRepository = new UserRepository($this->conn, $this->logger);
         $this->clientRepository = new ClientRepository($this->conn, $this->logger);
+        $this->projectRepository = new ProjectRepository($this->conn, $this->logger);
         
         $sessionDestroyed = false;
         if($install) {

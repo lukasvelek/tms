@@ -59,7 +59,7 @@ class ClientGridFactory extends AComponent implements IFactory {
     }
 
     private function getClientsForGrid() {
-        $page = $this->Get('grid_page');
+        $page = $this->get('grid_page');
 
         if($page !== NULL && $page > 0) {
             $page -= 1;
