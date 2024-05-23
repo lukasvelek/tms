@@ -142,6 +142,21 @@ class ClientRepository extends ARepository {
 
         return $qb->fetch();
     }
+
+    public function getAllClients() {
+        $qb = $this->qb(__METHOD__);
+
+        $qb ->select(['*'])
+            ->from('clients')
+            ->execute();
+
+        $clients = [];
+        while($row = $qb->fetchAssoc()) {
+            $clients[] = ClientEntity::createClientEntityFromDbRow($row);
+        }
+
+        return $clients;
+    }
 }
 
 ?>

@@ -74,6 +74,16 @@ class ProjectRepository extends ARepository {
 
         return $count;
     }
+
+    public function createProject(string $name, int $idProjectManager, int $status, int $idClient) {
+        $qb = $this->qb(__METHOD__);
+
+        $qb ->insert('projects', ['name', 'id_project_manager', 'status', 'id_client'])
+            ->values([$name, $idProjectManager, $status, $idClient])
+            ->execute();
+
+        return $qb->fetch();
+    }
 }
 
 ?>
